@@ -1,0 +1,61 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "ReadEc2InSeoulWithMfa",
+      "Effect": "Allow",
+      "Action": "ec2:Describe*",
+      "Resource": "*",
+      "Condition": {"StringEquals": {"aws:RequestedRegion": "ap-northeast-2"}, "Bool": {"aws:MultiFactorAuthPresent": "true"}}
+    },
+    {
+      "Sid": "CreateOnlyRequiredNetworkResources",
+      "Effect": "Allow",
+      "Action": ["ec2:CreateVpc", "ec2:CreateSubnet", "ec2:CreateRouteTable", "ec2:CreateInternetGateway", "ec2:CreateSecurityGroup", "ec2:CreateKeyPair", "ec2:ImportKeyPair"],
+      "Resource": "*",
+      "Condition": {"StringEquals": {"aws:RequestedRegion": "ap-northeast-2"}, "Bool": {"aws:MultiFactorAuthPresent": "true"}}
+    },
+    {
+      "Sid": "TagNewLabResourcesOnlyAtCreation",
+      "Effect": "Allow",
+      "Action": "ec2:CreateTags",
+      "Resource": "arn:aws:ec2:ap-northeast-2:*:*/*",
+      "Condition": {"StringEquals": {"aws:RequestedRegion": "ap-northeast-2", "aws:RequestTag/Project": "b3-1", "ec2:CreateAction": ["CreateVpc", "CreateSubnet", "CreateRouteTable", "CreateInternetGateway", "CreateSecurityGroup", "CreateKeyPair", "ImportKeyPair", "RunInstances"]}, "Bool": {"aws:MultiFactorAuthPresent": "true"}}
+    },
+    {
+      "Sid": "LaunchTaggedMicroWithImdsv2",
+      "Effect": "Allow",
+      "Action": "ec2:RunInstances",
+      "Resource": "arn:aws:ec2:ap-northeast-2:*:instance/*",
+      "Condition": {"StringEquals": {"aws:RequestedRegion": "ap-northeast-2", "aws:RequestTag/Project": "b3-1", "ec2:InstanceType": "t3.micro", "ec2:MetadataHttpTokens": "required", "ec2:Tenancy": "default"}, "Bool": {"aws:MultiFactorAuthPresent": "true"}}
+    },
+    {
+      "Sid": "LaunchTaggedSmallEncryptedGp3Volume",
+      "Effect": "Allow",
+      "Action": "ec2:RunInstances",
+      "Resource": "arn:aws:ec2:ap-northeast-2:*:volume/*",
+      "Condition": {"StringEquals": {"aws:RequestedRegion": "ap-northeast-2", "aws:RequestTag/Project": "b3-1", "ec2:VolumeType": "gp3"}, "NumericLessThanEquals": {"ec2:VolumeSize": "10"}, "Bool": {"aws:MultiFactorAuthPresent": "true", "ec2:Encrypted": "true"}}
+    },
+    {
+      "Sid": "LaunchUsingTaggedLabNetworkAndKey",
+      "Effect": "Allow",
+      "Action": "ec2:RunInstances",
+      "Resource": ["arn:aws:ec2:ap-northeast-2:*:subnet/*", "arn:aws:ec2:ap-northeast-2:*:security-group/*", "arn:aws:ec2:ap-northeast-2:*:key-pair/b3-1-*"],
+      "Condition": {"StringEquals": {"aws:RequestedRegion": "ap-northeast-2", "aws:ResourceTag/Project": "b3-1"}, "Bool": {"aws:MultiFactorAuthPresent": "true"}}
+    },
+    {
+      "Sid": "LaunchImageAndNetworkInterface",
+      "Effect": "Allow",
+      "Action": "ec2:RunInstances",
+      "Resource": ["arn:aws:ec2:ap-northeast-2::image/ami-*", "arn:aws:ec2:ap-northeast-2:*:network-interface/*"],
+      "Condition": {"StringEquals": {"aws:RequestedRegion": "ap-northeast-2"}, "Bool": {"aws:MultiFactorAuthPresent": "true"}}
+    },
+    {
+      "Sid": "OperateAndCleanOnlyTaggedLabResources",
+      "Effect": "Allow",
+      "Action": ["ec2:ModifyVpcAttribute", "ec2:ModifySubnetAttribute", "ec2:AttachInternetGateway", "ec2:DetachInternetGateway", "ec2:CreateRoute", "ec2:DeleteRoute", "ec2:AssociateRouteTable", "ec2:DisassociateRouteTable", "ec2:AuthorizeSecurityGroupIngress", "ec2:RevokeSecurityGroupIngress", "ec2:StopInstances", "ec2:TerminateInstances", "ec2:GetConsoleOutput", "ec2:GetConsoleScreenshot", "ec2:DeleteVolume", "ec2:DeleteKeyPair", "ec2:DeleteSecurityGroup", "ec2:DeleteSubnet", "ec2:DeleteRouteTable", "ec2:DeleteInternetGateway", "ec2:DeleteVpc"],
+      "Resource": "arn:aws:ec2:ap-northeast-2:*:*/*",
+      "Condition": {"StringEquals": {"aws:RequestedRegion": "ap-northeast-2", "aws:ResourceTag/Project": "b3-1"}, "Bool": {"aws:MultiFactorAuthPresent": "true"}}
+    }
+  ]
+}

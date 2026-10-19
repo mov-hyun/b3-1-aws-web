@@ -1,0 +1,28 @@
+Mon Oct 19 10:37:24 UTC 2026
+ip-10-31-1-236.ap-northeast-2.compute.internal
+ec2-user
+active
+enabled
+nginx: [warn] could not build optimal types_hash, you should increase either types_hash_max_size: 1024 or types_hash_bucket_size: 64; ignoring types_hash_bucket_size
+nginx: the configuration file /etc/nginx/nginx.conf syntax is ok
+nginx: configuration file /etc/nginx/nginx.conf test is successful
+HTTP/1.1 200 OK
+Server: nginx
+Date: Mon, 19 Oct 2026 10:37:26 GMT
+Content-Type: text/plain
+Content-Length: 3
+Connection: keep-alive
+Cache-Control: no-store
+
+OK
+localhost HTTP 200
+outbound HTTPS 200
+curl-minimal-8.21.0-5.amzn2023.0.2.x86_64
+nginx-1.30.5-1.amzn2023.0.1.x86_64
+State  Recv-Q Send-Q Local Address:Port Peer Address:PortProcess                                                                         
+LISTEN 0      128          0.0.0.0:22        0.0.0.0:*    users:(("sshd",pid=1902,fd=7))                                                 
+LISTEN 0      511          0.0.0.0:80        0.0.0.0:*    users:(("nginx",pid=4046,fd=8),("nginx",pid=4045,fd=8),("nginx",pid=4043,fd=8))
+LISTEN 0      128             [::]:22           [::]:*    users:(("sshd",pid=1902,fd=8))                                                 
+127.0.0.1 - - [19/Oct/2026:10:37:05 +0000] "GET /health HTTP/1.1" 200 3 "-" "curl/8.21.0"
+127.0.0.1 - - [19/Oct/2026:10:37:26 +0000] "GET /health HTTP/1.1" 200 3 "-" "curl/8.21.0"
+127.0.0.1 - - [19/Oct/2026:10:37:26 +0000] "GET / HTTP/1.1" 200 2369 "-" "curl/8.21.0"

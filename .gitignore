@@ -1,0 +1,12 @@
+.local/
+__pycache__/
+*.py[cod]
+.env
+.env.*
+!.env.example
+*.pem
+*.key
+id_ed25519*
+id_rsa*
+credentials
+.aws/

@@ -1,6 +1,6 @@
 # 트러블슈팅 보고서
 
-현재 상태: **MFA 로그인 문제와 Nginx 배포 문제 해결, 서버 내부·외부 검증 완료**.
+현재 상태: **MFA 로그인·Nginx 설치·Docker 상태 확인 문제 해결, 각 실습의 서버 내부·외부 검증 완료**.
 
 ## 사례 1 — MFA 등록 표시 후 과제용 사용자 재로그인 실패 (해결)
 
@@ -31,3 +31,20 @@
 원본 근거: [초기 오류와 복구 로그](logs/bootstrap-troubleshooting.txt), [서버 검증](logs/server-verification.txt), [외부 응답](logs/external-health.txt).
 
 AWS 공식 문서: [AL2023의 curl / libcurl 패키지 구성](https://docs.aws.amazon.com/linux/al2023/ug/curl-minimal.html).
+
+## 사례 3 — Docker 시작 직후 상태 확인이 먼저 실행됨 (해결)
+
+| 항목 | 실제 관찰·근거 |
+|---|---|
+| 증상 | 2026-10-21 12:49:32 KST cloud-init이 error로 끝났습니다. 부트스트랩 마지막 출력은 `curl: (52) Empty reply from server`였습니다. |
+| 원인 가설 | Docker가 호스트 포트를 연결한 직후 Caddy의 HTTP 처리 준비 전에 curl이 도달한 일시적 시작 오류일 수 있습니다. 기존 재시도는 연결 거부만 추가 처리하므로 curl 52를 재시도하지 않았을 수 있습니다. |
+| 검증 | 설치 로그의 Docker 설치·이미지 다운로드·Caddy `Valid configuration` 성공과 docker ps의 Up 상태를 확인했습니다. 같은 인스턴스에서 시간이 지난 뒤 localhost·외부 요청은 200이었습니다. 컨테이너 재시작 직후에는 curl 56 연결 재설정이 관찰됐고, 보완한 재시도로 200을 받았습니다. 시작 직후의 일시적 연결 오류라는 가설을 뒷받침합니다. |
+| 조치 | 첫 오류 로그와 cloud-init 상태를 보존했습니다. 상태 확인 GET에 `--retry 12 --retry-all-errors --retry-delay 2 --retry-max-time 45 --max-time 10`을 적용했습니다. Caddy의 고정 본문을 `OK`로 맞추고 설정 검사를 통과한 뒤 컨테이너를 재시작했습니다. |
+| 결과 | 재시도 명령 종료 코드 0. 12:53:39~40 KST Docker active·Up, localhost /와 /health 200·OK, 외부 HTTP·HTTPS 200·OK, DNS·신뢰 CA·호스트 이름·TLS 1.3 검증 성공. 실제 HTTPS 페이지도 브라우저에서 확인했습니다. 원래 cloud-init은 error로 보존했습니다. |
+| 재발 방지 | 컨테이너 생성 성공과 애플리케이션 준비 완료를 따로 확인합니다. 부작용이 없는 localhost 상태 확인 GET에만 횟수·시간을 제한한 재시도를 적용하고, 재시도 소진 시 실패로 처리합니다. 서비스·내부 응답·외부 응답을 함께 확인합니다. |
+
+근거: [원래 부트스트랩 오류](logs/bonus-bootstrap-troubleshooting.txt), [최종 서버 검증](logs/bonus-server-verification.txt), [외부 응답·인증서](logs/bonus-external-verification.txt), [수정된 생성 스크립트](../scripts/build_bonus_user_data.py).
+
+수정된 user-data 전체를 새 EC2에서 다시 실행하지는 않았습니다. 같은 EC2에서 Caddy 설정 검사와 재시작·보완한 상태 확인 명령을 검증했고, 로컬 단위 검사 6개와 Bash 문법 검사를 통과했습니다. Caddyfile 포맷 경고와 의도한 HTTP 전용 리스너 안내는 남아 있으며, 실제 HTTP·HTTPS 동작은 정상입니다.
+
+공식 동작 근거: [curl 오류 재시도 옵션](https://curl.se/docs/manpage.html#--retry-all-errors).

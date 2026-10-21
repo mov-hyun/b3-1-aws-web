@@ -1,0 +1,34 @@
+{
+    admin off
+    auto_https disable_redirects
+    acme_ca https://acme-v02.api.letsencrypt.org/directory
+    servers {
+        protocols h1 h2
+    }
+}
+
+(website) {
+    root * /srv
+    header {
+        -Server
+        X-Content-Type-Options nosniff
+        Referrer-Policy no-referrer
+        Content-Security-Policy "default-src 'none'; style-src 'unsafe-inline'; base-uri 'none'; frame-ancestors 'none'; form-action 'none'"
+    }
+    handle /health {
+        header Cache-Control no-store
+        respond "OK" 200
+    }
+    handle {
+        file_server
+    }
+    log
+}
+
+:80 {
+    import website
+}
+
+{$SITE_DOMAIN} {
+    import website
+}

@@ -1,0 +1,26 @@
+AWS Seoul / EC2 i-082daaa8d2788b50a
+Captured at (UTC): 2026-10-21T03:54:05Z
+
+$ sudo docker ps --filter name=b3-1-bonus-web
+NAMES            STATUS              IMAGE     PORTS
+b3-1-bonus-web   Up About a minute   caddy     0.0.0.0:80->80/tcp, :::80->80/tcp, 0.0.0.0:443->443/tcp, :::443->443/tcp, 443/udp, 2019/tcp
+
+$ sudo docker inspect b3-1-bonus-web --format Config.Image
+caddy@sha256:d8542f48d34a9cf4e4c11a478865229840e87e4c96ea3f439101f31a5d35f75f
+
+$ curl -i http://localhost/health
+HTTP/1.1 200 OK
+Cache-Control: no-store
+Content-Security-Policy: default-src 'none'; style-src 'unsafe-inline'; base-uri 'none'; frame-ancestors 'none'; form-action 'none'
+Content-Type: text/plain; charset=utf-8
+Referrer-Policy: no-referrer
+X-Content-Type-Options: nosniff
+Date: Wed, 21 Oct 2026 03:54:06 GMT
+Content-Length: 2
+
+OK
+
+$ sudo docker exec b3-1-bonus-web caddy version
+v2.11.7 h1:yj0Y4fYZGPkSvibBJ1sTWE33xC0fxztVyXEW5iIdUT4=
+
+Only host TCP 80 and 443 are published. Docker EXPOSE metadata is not a host port mapping.

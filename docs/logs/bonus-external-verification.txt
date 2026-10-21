@@ -1,0 +1,83 @@
+Verified at (UTC): 2026-10-21T03:53:40.765998+00:00
+External client: learner Windows PC, outside the VPC
+DNS A: bonus-movhyun.3.34.131.100.sslip.io -> 3.34.131.100
+
+Command: curl.exe --fail --silent --show-error --max-time 20 --include --write-out "\nHTTP_CODE=%{http_code} TLS_VERIFY_RESULT=%{ssl_verify_result}\n" http://3.34.131.100/health
+HTTP/1.1 200 OK
+Cache-Control: no-store
+Content-Security-Policy: default-src 'none'; style-src 'unsafe-inline'; base-uri 'none'; frame-ancestors 'none'; form-action 'none'
+Content-Type: text/plain; charset=utf-8
+Referrer-Policy: no-referrer
+X-Content-Type-Options: nosniff
+Date: Wed, 21 Oct 2026 03:53:39 GMT
+Content-Length: 2
+
+OK
+HTTP_CODE=200 TLS_VERIFY_RESULT=0
+
+Exit code: 0
+
+Command: curl.exe --fail --silent --show-error --max-time 20 --include --write-out "\nHTTP_CODE=%{http_code} TLS_VERIFY_RESULT=%{ssl_verify_result}\n" https://bonus-movhyun.3.34.131.100.sslip.io/health
+HTTP/1.1 200 OK
+Cache-Control: no-store
+Content-Security-Policy: default-src 'none'; style-src 'unsafe-inline'; base-uri 'none'; frame-ancestors 'none'; form-action 'none'
+Content-Type: text/plain; charset=utf-8
+Referrer-Policy: no-referrer
+X-Content-Type-Options: nosniff
+Date: Wed, 21 Oct 2026 03:53:39 GMT
+Content-Length: 2
+
+OK
+HTTP_CODE=200 TLS_VERIFY_RESULT=0
+
+Exit code: 0
+
+Independent TLS verification: Python default trusted CA store + hostname check
+TLS version: TLSv1.3
+Peer certificate SHA256: bb139cce24ab6159b9c3295d5ee20e6f89672aa311bd8d136c853555199521cb
+{
+  "subject": [
+    [
+      [
+        "commonName",
+        "bonus-movhyun.3.34.131.100.sslip.io"
+      ]
+    ]
+  ],
+  "issuer": [
+    [
+      [
+        "countryName",
+        "US"
+      ]
+    ],
+    [
+      [
+        "organizationName",
+        "Let's Encrypt"
+      ]
+    ],
+    [
+      [
+        "commonName",
+        "YE1"
+      ]
+    ]
+  ],
+  "version": 3,
+  "serialNumber": "0564B68205E5ADC580BD7CD09D5EEB9C3ADB",
+  "notBefore": "Oct 21 02:51:05 2026 GMT",
+  "notAfter": "Jan 19 02:51:04 2027 GMT",
+  "subjectAltName": [
+    [
+      "DNS",
+      "bonus-movhyun.3.34.131.100.sslip.io"
+    ]
+  ],
+  "caIssuers": [
+    "http://ye1.i.lencr.org/"
+  ],
+  "crlDistributionPoints": [
+    "http://ye1.c.lencr.org/92.crl"
+  ]
+}

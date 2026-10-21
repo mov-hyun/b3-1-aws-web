@@ -4,9 +4,31 @@
 
 저장소: https://github.com/mov-hyun/b3-1-aws-web
 
-## 현재 진행 상태
+2026-10-21 추가 결과: **HTTPS·Docker 보너스 검증·증빙 저장·자원 정리 완료**. 기존 필수 실습의 검증·정리 기록은 보존합니다.
 
-- AWS 무료 플랜과 USD 100 크레딧, 서울 리전 선택 확인.
+## HTTPS·Docker 보너스 — 2026-10-21
+
+서울 EC2 한 대에서 공식 Caddy 컨테이너와 무료 sslip.io 서브도메인·Let's Encrypt 인증서를 사용했습니다. NAT·Elastic IP·로드 밸런서·RDS·유료 도메인은 만들지 않았습니다.
+
+- 이미지: `caddy:2-alpine`을 내려받고 `caddy@sha256:d8542f48d34a9cf4e4c11a478865229840e87e4c96ea3f439101f31a5d35f75f`로 고정해 실행. Caddy 2.11.7, Docker CLI 25.0.14.
+- 실행 방식: [생성 스크립트](scripts/build_bonus_user_data.py)의 EC2 user-data에서 `docker run --detach --name b3-1-bonus-web --restart unless-stopped` 실행. 정적 파일·Caddyfile은 읽기 전용 마운트, 인증서 데이터는 Docker 볼륨에 보관. [전체 실행 명령](docs/bonus.md#docker-실행-결과).
+- 포트 매핑: **호스트 TCP 80 → 컨테이너 80, 호스트 TCP 443 → 컨테이너 443**. SSH 22는 내 IP /32만 허용.
+- 12:53:39~40 KST 내부 `http://localhost` 및 `/health` 200, Docker Up, 아웃바운드 HTTPS 200 확인.
+- 외부 검증 방식 **B**: `GET http://3.34.131.100/health` → **200, 본문 OK**.
+- HTTPS: `https://bonus-movhyun.3.34.131.100.sslip.io/health` → **200, 본문 OK**. curl 인증서 검증 결과 0, 별도 신뢰 CA·호스트 이름 검사 통과, TLS 1.3. 실제 HTTPS 페이지의 브라우저 표시도 확인.
+- [원본 서버 로그](docs/logs/bonus-server-verification.txt), [외부 응답·인증서 로그](docs/logs/bonus-external-verification.txt), [상세 결과와 복구 과정](docs/bonus.md), [별도 자원 추적](docs/bonus-resources.json).
+
+![실제 Docker Up와 내부 응답 로그](docs/screenshots/bonus-docker-up.png)
+
+![실제 외부 HTTP·HTTPS 응답 로그 발췌](docs/screenshots/bonus-external-health.png)
+
+위 두 이미지는 실제 명령의 저장 로그 뷰어입니다. [실제 HTTPS 웹페이지 스크린샷](docs/screenshots/bonus-https-page.png)도 보관했습니다. 최초 상태 확인의 타이밍 오류로 cloud-init은 error로 남았으며, 재시도를 보완하고 서비스·응답·TLS 검증을 완료했습니다. 실패 기록은 [트러블슈팅 보고서](docs/troubleshooting.md)에 보존합니다.
+
+**보너스 서버는 종료·삭제됐습니다.** 2026-10-21 13:01:49 KST EC2 종료를 요청했고, 13:06:29 KST 최종 종료 상태와 EBS·키 페어·보너스 네트워크 삭제·IP 반환을 확인했습니다. 위 IP와 서브도메인은 과거 검증 정보이며 재접속하지 않습니다. 증빙은 보관한 로그와 스크린샷으로 확인합니다. [정리 근거](docs/cleanup-checklist.md).
+
+## 필수 실습 완료 기록 — 2026-10-19
+
+- 2026-10-19 AWS 무료 플랜과 USD 100 크레딧, 서울 리전 선택 확인. 당시 확인한 금액이며 현재 잔액은 별도로 조회하지 않았습니다.
 - 2026-10-19 루트 계정의 패스키 MFA 1개 등록을 콘솔에서 확인.
 - 웹페이지·Nginx 설정·EC2 user-data·아키텍처 PNG·과제용 IAM 정책 준비.
 - 로컬 단위 검사 4개와 Bash 문법 검사 통과. 브라우저에서 정적 웹페이지 레이아웃 확인.
@@ -41,7 +63,7 @@
 - 직접 만든 네트워크 자원과 키 페어에 `Project=b3-1`, `Name` 태그 부여. 인스턴스·루트 볼륨·네트워크 인터페이스에 `Project=b3-1` 적용. VPC 자동 생성 기본 자원은 해당 VPC의 종속 자원으로 추적.
 - NAT Gateway, Elastic IP, ALB/ELB, RDS, 유료 도메인은 생성하지 않습니다.
 - IAM은 글로벌 서비스이므로 화면에 `Global` 또는 `us-east-1`이 표시될 수 있습니다. EC2/VPC 등 지역 자원은 서울에만 생성합니다.
-- 우선 필수 과제를 완성합니다. HTTPS·Docker 보너스는 현재 범위에 포함하지 않습니다.
+- 필수 실습은 2026-10-19 완료했습니다. HTTPS·Docker 보너스는 2026-10-21 별도 EC2에서 실제 검증했습니다. 각 실습의 식별자와 정리 상태는 별도로 기록합니다.
 
 ## 로컬 준비 검증
 

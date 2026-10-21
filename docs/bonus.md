@@ -88,17 +88,9 @@ python -m unittest discover -s tests -v
 
 ### 스크린샷
 
-![Docker Up와 내부 응답](screenshots/bonus-docker-up.png)
-
-첫 이미지는 실제 SSH 출력 [원문](logs/bonus-docker-ps.txt)을 그대로 표시한 저장 로그 뷰어입니다. AWS 콘솔이나 터미널 자체를 캡처한 이미지는 아닙니다.
-
-![외부 HTTP·HTTPS 검증](screenshots/bonus-external-health.png)
-
-두 번째 이미지는 실제 curl 출력에서 URL·상태·본문·TLS 검증 값을 발췌한 저장 로그 뷰어입니다. 전체 응답 헤더와 인증서 정보는 원본 로그에 있습니다.
-
 ![실제 HTTPS 페이지](screenshots/bonus-https-page.png)
 
-세 번째 이미지는 실제 HTTPS 웹페이지를 브라우저에서 연 화면입니다.
+위 이미지는 실제 HTTPS 웹페이지를 브라우저에서 연 화면입니다.
 
 ## 시작 직후 상태 확인 오류와 복구
 

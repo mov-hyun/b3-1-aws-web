@@ -44,9 +44,8 @@ nginx -t에 기본 MIME 해시 크기 경고가 있었으나 검사 종료 성�
 2026-10-19 **19:37:35 KST**에 EC2 외부의 로컬 PC에서 실행했습니다. 결과는 **HTTP/1.1 200 OK**, 본문 **OK**입니다.
 
 - [원본 HTTP 응답](logs/external-health.txt)
-- [실제 실행 로그 스크린샷](screenshots/external-health.png)
 
-스크린샷은 실제 저장 로그를 읽는 로컬 HTML 뷰어를 캡처했습니다. 이 뷰어 자체는 AWS로 요청하지 않습니다. 자동화 브라우저의 공인 IP 직접 열기는 ERR_BLOCKED_BY_CLIENT로 표시되어 방식 A의 성공 증빙으로 사용하지 않았습니다. 외부 HTTP 요청의 성공은 원본 curl 로그와 응답 시각으로 확인했습니다.
+자동화 브라우저의 공인 IP 직접 열기는 ERR_BLOCKED_BY_CLIENT로 표시되어 방식 A의 성공 증빙으로 사용하지 않았습니다. 외부 HTTP 요청의 성공은 원본 curl 로그와 응답 시각으로 확인했습니다.
 
 ## 준비 단계 검증
 

@@ -11,13 +11,13 @@
 | HTTP 80 공개, SSH 22 내 IP 제한 | evidence.md, 비공개 콘솔 원본 | 인바운드 2개 확인, 전체 포트 공개 없음 |
 | 최소권한 IAM 사용자 또는 Role | infra/iam-policy.json, account-setup.md | b3-1-lab MFA 세션에서 생성 성공 |
 | 관리자 권한 미부여 | account-setup.md, 비공개 정책 목록 | 연결 정책 3개, 관리자 정책 없음 |
-| 외부 /health 200 및 OK | README, logs/external-health.txt, screenshots/external-health.png | 방식 B, 2026-10-19 19:37:35 KST 성공 |
+| 외부 /health 200 및 OK | README, logs/external-health.txt | 방식 B, 2026-10-19 19:37:35 KST 성공 |
 | 트러블슈팅 최소 1건 | troubleshooting.md | 실제 로그인·설치 장애 2건 해결 |
 | EC2/EBS/EIP/IGW/VPC 정리 | cleanup-checklist.md, resources.json | 종료·삭제 및 잔여 목록 확인 완료 |
 
 외부 검증의 원문 조건은 A/B **택 1**이며 선택 방식은 B입니다. A와 B를 모두 필수로 제출하는 조건은 없습니다. [선택 근거·실제 브라우저 관찰](browser-verification.md), [공개 위험·운영·확장·비용 대응](operations.md)을 함께 제공합니다. Markdown 설명은 이미지 제외 평가를 위한 텍스트 동반 문서이며, 원문의 PNG 산출물도 유지합니다.
 
-제출 파일: docs/architecture.png, 외부 접속 결과 스크린샷, docs/troubleshooting.md, docs/cleanup-checklist.md. README에 실제 URL과 방식 B를 명시했습니다. 계정 전체 Billing 재확인은 권장 항목으로 남겼으며, 실습 자원 정리는 완료했습니다.
+제출 파일: docs/architecture.png, docs/troubleshooting.md, docs/cleanup-checklist.md. README에 실제 URL과 방식 B를 명시했습니다. 계정 전체 Billing 재확인은 권장 항목으로 남겼으며, 실습 자원 정리는 완료했습니다.
 
 ## 2026-10-21 선택 보너스
 
@@ -27,5 +27,4 @@
 | Docker 내부 localhost 정상 응답 | logs/bonus-server-verification.txt | localhost /와 /health 200 |
 | Docker 외부 HTTP 접속 | logs/bonus-external-verification.txt | 방식 B, 공인 IP /health 200·OK |
 | 이미지명·실행 방식·포트 매핑 | README, bonus.md, scripts/build_bonus_user_data.py | 실제 digest, docker run, TCP 80:80·443:443 기록 |
-| Docker Up·외부 접속 스크린샷 2장 이상 | screenshots/bonus-docker-up.png, bonus-external-health.png, bonus-https-page.png | 로그 뷰어 2장·실제 HTTPS 페이지 1장 |
 | 보너스 자원 정리 | bonus-resources.json, cleanup-checklist.md | 2026-10-21 13:06:29 KST 종료·삭제 확인 완료 |

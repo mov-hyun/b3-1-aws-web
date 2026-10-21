@@ -20,11 +20,7 @@
 - HTTPS: `https://bonus-movhyun.3.34.131.100.sslip.io/health` → **200, 본문 OK**. curl 인증서 검증 결과 0, 별도 신뢰 CA·호스트 이름 검사 통과, TLS 1.3. 실제 HTTPS 페이지의 브라우저 표시도 확인.
 - [원본 서버 로그](docs/logs/bonus-server-verification.txt), [외부 응답·인증서 로그](docs/logs/bonus-external-verification.txt), [상세 결과와 복구 과정](docs/bonus.md), [별도 자원 추적](docs/bonus-resources.json).
 
-![실제 Docker Up와 내부 응답 로그](docs/screenshots/bonus-docker-up.png)
-
-![실제 외부 HTTP·HTTPS 응답 로그 발췌](docs/screenshots/bonus-external-health.png)
-
-위 두 이미지는 실제 명령의 저장 로그 뷰어입니다. [실제 HTTPS 웹페이지 스크린샷](docs/screenshots/bonus-https-page.png)도 보관했습니다. 최초 상태 확인의 타이밍 오류로 cloud-init은 error로 남았으며, 재시도를 보완하고 서비스·응답·TLS 검증을 완료했습니다. 실패 기록은 [트러블슈팅 보고서](docs/troubleshooting.md)에 보존합니다.
+[실제 HTTPS 웹페이지 스크린샷](docs/screenshots/bonus-https-page.png)을 보관했습니다. 최초 상태 확인의 타이밍 오류로 cloud-init은 error로 남았으며, 재시도를 보완하고 서비스·응답·TLS 검증을 완료했습니다. 실패 기록은 [트러블슈팅 보고서](docs/troubleshooting.md)에 보존합니다.
 
 **보너스 서버는 종료·삭제됐습니다.** 2026-10-21 13:01:49 KST EC2 종료를 요청했고, 13:06:29 KST 최종 종료 상태와 EBS·키 페어·보너스 네트워크 삭제·IP 반환을 확인했습니다. 위 IP와 서브도메인은 과거 검증 정보이며 재접속하지 않습니다. 증빙은 보관한 로그와 스크린샷으로 확인합니다. [정리 근거](docs/cleanup-checklist.md).
 
@@ -50,11 +46,7 @@
 - 검증 시각: **2026-10-19 19:37:35 KST** (`10:37:35 UTC`)
 - 실제 응답: **HTTP `200 OK`, 본문 `OK`**
 - [원본 응답 로그](docs/logs/external-health.txt), [검증 문서](docs/evidence.md)
-- **현재 서버는 종료·삭제됐습니다.** 2026-10-19 19:45:35 KST 종료, 공인 IP 반환 완료. 위 URL은 과거 검증 주소이며 이후 다른 자원에 재할당될 수 있습니다. 현재 접속 증빙은 보관한 로그와 스크린샷으로 확인합니다.
-
-![실제 GET 요청 결과 로그 화면](docs/screenshots/external-health.png)
-
-스크린샷은 로컬 PC의 실제 `curl` 결과를 원문 그대로 표시한 로그 뷰어입니다. 방식 B의 HTTP 응답 증빙이며, 브라우저 페이지 표시 방식 A는 제출 방식에 포함하지 않습니다.
+- **현재 서버는 종료·삭제됐습니다.** 2026-10-19 19:45:35 KST 종료, 공인 IP 반환 완료. 위 URL은 과거 검증 주소이며 이후 다른 자원에 재할당될 수 있습니다. 현재 접속 기록은 보관한 원본 응답 로그로 확인합니다.
 
 ## 구성과 범위
 

@@ -4,7 +4,7 @@
 
 | 요구사항 | 증빙 위치 | 현재 상태 |
 |---|---|---|
-| VPC 1개, Public Subnet 1개, IGW 연결 | architecture.png, resources.json, evidence.md | 생성·연결 확인 |
+| VPC 1개, Public Subnet 1개, IGW 연결 | architecture.png, architecture.md, resources.json, evidence.md | 생성·연결 확인, Markdown 경로도 제공 |
 | 0.0.0.0/0 → IGW, 외부 아웃바운드 | evidence.md, logs/server-verification.txt | 경로 Active, HTTPS 200 |
 | EC2 1대, SSH 접속 | resources.json, logs/server-verification.txt | 실제 SSH 성공 |
 | Nginx 실행, localhost 200 | logs/server-verification.txt | active·enabled, localhost 200 |
@@ -14,6 +14,8 @@
 | 외부 /health 200 및 OK | README, logs/external-health.txt, screenshots/external-health.png | 방식 B, 2026-10-19 19:37:35 KST 성공 |
 | 트러블슈팅 최소 1건 | troubleshooting.md | 실제 로그인·설치 장애 2건 해결 |
 | EC2/EBS/EIP/IGW/VPC 정리 | cleanup-checklist.md, resources.json | 종료·삭제 및 잔여 목록 확인 완료 |
+
+외부 검증의 원문 조건은 A/B **택 1**이며 선택 방식은 B입니다. A와 B를 모두 필수로 제출하는 조건은 없습니다. [선택 근거·실제 브라우저 관찰](browser-verification.md), [공개 위험·운영·확장·비용 대응](operations.md)을 함께 제공합니다. Markdown 설명은 이미지 제외 평가를 위한 텍스트 동반 문서이며, 원문의 PNG 산출물도 유지합니다.
 
 제출 파일: docs/architecture.png, 외부 접속 결과 스크린샷, docs/troubleshooting.md, docs/cleanup-checklist.md. README에 실제 URL과 방식 B를 명시했습니다. 계정 전체 Billing 재확인은 권장 항목으로 남겼으며, 실습 자원 정리는 완료했습니다.
 

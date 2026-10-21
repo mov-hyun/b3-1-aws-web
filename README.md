@@ -4,6 +4,8 @@
 
 저장소: https://github.com/mov-hyun/b3-1-aws-web
 
+필수 외부 검증은 **B — 공인 IP의 GET /health → 200·OK**입니다. 과제 원문은 A/B 중 하나를 선택하도록 합니다. [방식 선택과 브라우저 관찰 기록](docs/browser-verification.md)에 실제 결과를 정리했습니다. 아키텍처는 제출용 PNG와 같은 구성의 [Markdown 설명·경로도](docs/architecture.md)도 제공합니다.
+
 2026-10-21 추가 결과: **HTTPS·Docker 보너스 검증·증빙 저장·자원 정리 완료**. 기존 필수 실습의 검증·정리 기록은 보존합니다.
 
 ## HTTPS·Docker 보너스 — 2026-10-21
@@ -65,6 +67,14 @@
 - IAM은 글로벌 서비스이므로 화면에 `Global` 또는 `us-east-1`이 표시될 수 있습니다. EC2/VPC 등 지역 자원은 서울에만 생성합니다.
 - 필수 실습은 2026-10-19 완료했습니다. HTTPS·Docker 보너스는 2026-10-21 별도 EC2에서 실제 검증했습니다. 각 실습의 식별자와 정리 상태는 별도로 기록합니다.
 
+## 보안·운영 판단
+
+HTTP 80의 `0.0.0.0/0`는 모든 IPv4 출발지에 웹 포트를 공개합니다. 외부 접속 과제 검증을 위한 설정이며, 자동 스캔·취약점 공격·과도한 요청과 HTTP 평문의 도청·변조 위험이 있습니다. SSH 22는 내 IP /32로 제한했고, 전체 포트 공개 규칙은 만들지 않았습니다. 두 실습 모두 증빙 확보 후 공개 자원을 삭제했습니다. [공개 목적·기간·허용 IP/VPN/ALB 대안](docs/operations.md)에 판단 근거를 기록했습니다.
+
+SG는 포트·소스 등 네트워크 통신을, IAM은 사용자의 AWS API 작업·자원·조건을 통제합니다. 외부 접속 장애는 라우팅 → SG → 현재 공인 IP → 서버 상태 → 외부 재검증 순서로 점검하고, 관리 API 권한 오류는 사용자·MFA·리전·태그·정책에서 조사합니다.
+
+패키지 설치·이미지 다운로드·인증서 발급에는 서버가 시작하는 아웃바운드 연결이 필요합니다. SG는 허용한 요청의 응답을 상태에 따라 허용합니다. 병목 지표, ALB 도입 조건, 태그 기반 비용 추적·알림·증가 시 대응은 [보안·운영 계획](docs/operations.md)에 정리했습니다. 확장 구성과 비용 알림은 향후 계획이며, 이번에 만들거나 성능을 측정한 결과로 표시하지 않습니다.
+
 ## 로컬 준비 검증
 
 Python 표준 라이브러리만으로 배포 스크립트를 생성하고 검증합니다.
@@ -87,7 +97,10 @@ python scripts/render_architecture.py
 - [MFA와 최소권한 IAM](docs/account-setup.md)
 - [배포 순서](docs/deploy-guide.md)
 - [아키텍처 PNG](docs/architecture.png)
+- [아키텍처 Markdown·트래픽 경로](docs/architecture.md)
 - [실제 검증 증빙](docs/evidence.md)
+- [방식 B와 브라우저 관찰 기록](docs/browser-verification.md)
+- [보안·장애 점검·확장·비용 대응](docs/operations.md)
 - [트러블슈팅](docs/troubleshooting.md)
 - [리소스 정리 체크리스트](docs/cleanup-checklist.md)
 - [리소스 상태](docs/resources.json)
